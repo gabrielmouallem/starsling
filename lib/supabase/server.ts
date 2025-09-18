@@ -1,10 +1,10 @@
-/**
- * Supabase client uses Latitude.sh Databases — Supabase Addon (DBaaS).
- * This is a product I built at Latitude.sh (https://latitude.sh).
- */
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+/**
+ * If using Fluid compute: Don't put this client in a global variable. Always create a new client within each
+ * function when using it.
+ */
 export async function createClient() {
   const cookieStore = await cookies()
 
