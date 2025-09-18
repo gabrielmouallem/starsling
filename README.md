@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+> Note on data layer: The Supabase client configured in this repository targets Latitude.sh Databases — the Supabase Addon (DBaaS). This addon is a product I built at Latitude.sh. This repository is part of a take‑home assessment for another company.
+
 ## Getting Started
 
 First, run the development server:
