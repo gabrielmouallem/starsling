@@ -46,14 +46,6 @@ async function disconnectInstallation(installationId: string) {
   return data;
 }
 
-type IssueRow = {
-  issue_id: number;
-  number: number | null;
-  title: string | null;
-  state: string | null;
-  repo_full_name: string | null;
-};
-
 export default function IntegrationsClient({
   initialInstallations,
 }: IntegrationsClientProps) {
