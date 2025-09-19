@@ -98,7 +98,6 @@ npx inngest-cli@latest dev
 - You’ll be redirected to `/integrations`
 - Click “Connect GitHub Account” and complete the GitHub App install
 - Webhooks will post to `/api/github/webhook` → verified → enqueued to Inngest → stored
-- Issues for your org: GET `http://localhost:3000/api/issues`
 
 ### 7) Deploy to Vercel + Inngest Cloud
 

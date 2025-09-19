@@ -54,11 +54,6 @@ type IssueRow = {
   repo_full_name: string | null;
 };
 
-async function fetchIssues(): Promise<IssueRow[]> {
-  const { data } = await axios.get("/api/issues");
-  return data.issues ?? [];
-}
-
 export default function IntegrationsClient({
   initialInstallations,
 }: IntegrationsClientProps) {
