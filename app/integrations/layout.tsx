@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { LogoutButton } from "@/components/logout-button";
+import { SideMenu } from "@/components/side-menu";
+import { Navbar } from "@/components/navbar";
 
 export default async function IntegrationsLayout({
   children,
@@ -16,9 +17,9 @@ export default async function IntegrationsLayout({
     redirect("/login");
   }
   return (
-    <div>
-      <LogoutButton />
-      {children}
+    <div className="min-h-dvh w-full">
+      <Navbar />
+      <main className="p-6">{children}</main>
     </div>
   );
 }

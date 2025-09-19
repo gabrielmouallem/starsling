@@ -1,8 +1,9 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth/client";
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -12,5 +13,9 @@ export function LogoutButton() {
     router.push("/login");
   };
 
-  return <Button onClick={logout}>Logout</Button>;
+  return (
+    <Button variant="outline" onClick={logout} title="Logout">
+      <LogOut color="white" size={16} />
+    </Button>
+  );
 }
