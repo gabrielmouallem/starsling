@@ -37,7 +37,7 @@ Required keys:
 - GITHUB_APP_ID=...
 - GITHUB_APP_SLUG=...
 - GITHUB_APP_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-- GITHUB_WEBHOOK_SECRET=...
+- GITHUB_WEBHOOK_SECRET=wh_secret_7k9m2x8p4n6q1z3v5b8c0e2r4t6y9u1w3e5r7t9y2u4i6o8p0a2s4d6f8g0h2j4k6l8z
 
 If you don't see an `.env.example`, use the keys above to create one.
 
@@ -102,12 +102,14 @@ npx inngest-cli@latest dev
 ### 7) Deploy to Vercel + Inngest Cloud
 
 1. Push to GitHub and import the repo into Vercel.
-2. Add all environment variables in Vercel (same as dev). If integrating with Inngest Cloud, also add `INNGEST_SIGNING_KEY` and `INNGEST_EVENT_KEY` provided by Inngest Cloud.
+2. Add all environment variables in Vercel (same as dev). For Inngest Cloud:
+   - Create an app in Inngest Cloud → add Vercel deployment → set Serve URL to `https://YOUR_DOMAIN/api/inngest`
+   - Copy `INNGEST_SIGNING_KEY` and `INNGEST_EVENT_KEY` from Inngest Cloud and add to Vercel env vars
 3. In your GitHub App, set:
    - Callback URL: `https://YOUR_DOMAIN/api/github/callback`
    - Webhook URL: `https://YOUR_DOMAIN/api/github/webhook`
-4. In Inngest Cloud, create an app → add a Vercel deployment → set Serve URL to `https://YOUR_DOMAIN/api/inngest`.
-5. Trigger events via the Cloud dashboard or your app; inspect Runs in Inngest Cloud.
+4. Redeploy and test webhook delivery from GitHub App settings or by opening/closing an issue in a connected repo.
+5. Check Inngest Cloud dashboard for function runs.
 
 ### Notes
 
