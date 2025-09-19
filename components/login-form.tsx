@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth/client";
 
 export function LoginForm({
   className,
@@ -22,18 +23,14 @@ export function LoginForm({
   const handleSocialLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    fetch("/api/github/auth")
-      .then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            router.push(data.url);
-            setIsLoading(false);
-          });
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
+    try {
+      await authClient.signIn.social({
+        provider: "github",
+        errorCallbackURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/error`,
       });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

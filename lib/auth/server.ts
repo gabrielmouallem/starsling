@@ -37,14 +37,14 @@ function decrypt(encryptedText: string): string {
 }
 
 export const auth = betterAuth({
-  baseURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api`,
+  baseURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/auth`,
   database: new Pool({
     connectionString: process.env.SUPABASE_DB_CONN_URI!,
   }),
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      clientId: process.env.GITHUB_OAUTH_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET!,
     },
   },
   databaseHooks: {

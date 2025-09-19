@@ -8,8 +8,6 @@ export async function Navbar() {
     headers: await headers(),
   });
 
-  console.log({ session });
-
   return (
     <nav className="w-full h-16 px-6 py-4 border-b border-neutral-800 bg-background flex items-center justify-between">
       <span>
