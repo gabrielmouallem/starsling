@@ -26,14 +26,23 @@ function encrypt(text: string): string {
   return iv.toString('hex') + ':' + encrypted;
 }
 
-function decrypt(encryptedText: string): string {
-  const key = scryptSync(ENCRYPTION_SECRET, 'salt', 32);
-  const [ivHex, encrypted] = encryptedText.split(':');
-  const iv = Buffer.from(ivHex, 'hex');
-  const decipher = createDecipheriv(ALGORITHM, key, iv);
-  let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
+function decrypt(maybeEncryptedText: string): string {
+  try {
+    const parts = maybeEncryptedText.split(":");
+    const looksEncrypted = parts.length === 2 && /^[a-f0-9]{32}$/i.test(parts[0]) && parts[1].length > 0;
+    if (!looksEncrypted) {
+      return maybeEncryptedText; // treat as plaintext
+    }
+    const key = scryptSync(ENCRYPTION_SECRET, 'salt', 32);
+    const [ivHex, encrypted] = parts;
+    const iv = Buffer.from(ivHex, 'hex');
+    const decipher = createDecipheriv(ALGORITHM, key, iv);
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  } catch {
+    return maybeEncryptedText; // fail-safe passthrough
+  }
 }
 
 export const auth = betterAuth({
@@ -91,5 +100,5 @@ export const auth = betterAuth({
   },
 });
 
-// Export decrypt function for when you need to retrieve tokens
-export { decrypt };
+// Export helpers for encrypting/decrypting provider tokens at rest
+export { encrypt, decrypt };
