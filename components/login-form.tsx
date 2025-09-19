@@ -27,7 +27,7 @@ export function LoginForm({
     try {
       const { data, error } = await authClient.signIn.social({
         provider: "github",
-        errorCallbackURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/error`,
+        errorCallbackURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/error`,
       });
 
       console.debug({ data, error });
