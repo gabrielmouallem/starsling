@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { Pool } from "pg";
+import { organization } from "better-auth/plugins"
 import { createCipheriv, createDecipheriv, randomBytes, scryptSync } from "crypto";
 
 // Simple encryption/decryption functions using Node.js crypto
@@ -56,6 +57,9 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET!,
     },
   },
+  plugins: [
+    organization(),
+  ],
   databaseHooks: {
     account: {
       create: {

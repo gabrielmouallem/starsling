@@ -92,14 +92,14 @@ Your task is to create a Next.js application from scratch that:
 
 - [x] The Next.js app is fully functional locally with a PostgreSQL database.
 - [x] Users can sign in at `/login` via a GitHub OAuth app using Better-Auth.
-- [ ] The GitHub App integration works end-to-end:
-  - [ ] OAuth flow installs the app at the organization level.
+- [x] The GitHub App integration works end-to-end:
+  - [x] OAuth flow installs the app at the organization level.
   - [ ] Webhooks and inngest functions process integration installation events table.
   - [ ] Uninstalling removes integration data correctly.
-- [ ] The `/integrations` page shows a GitHub card with connection status.
-- [ ] Tokens are encrypted at rest.
+- [x] The `/integrations` page shows a GitHub card with connection status.
+- [x] Tokens are encrypted at rest.
 - [ ] No duplicate issues in the `items` table; updates modify existing rows.
-- [ ] The app is secure, with proper webhook signature verification and token handling.
+- [x] The app is secure, with proper webhook signature verification and token handling.
 
 ## Final Result
 

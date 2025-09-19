@@ -1,31 +1,37 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { GITHUB_STATE_COOKIE_NAME, GITHUB_STATE_COOKIE_MAX_AGE, GITHUB_APP_BASE_URL } from "@/lib/github/constants";
 
 export async function GET(request: Request) {
+    const { origin } = new URL(request.url);
+    const appSlug = process.env.GITHUB_APP_SLUG;
+
+    // Early return for missing configuration
+    if (!appSlug) {
+        return NextResponse.redirect(`${origin}/error?error=missing_github_app_slug`);
+    }
+
     try {
-        const url = new URL(request.url);
-        const origin = url.origin;
-        const appSlug = process.env.GITHUB_APP_SLUG;
-
-        if (!appSlug) {
-            return NextResponse.redirect(`${origin}/error?error=missing_github_app_slug`);
-        }
-
+        // Generate state and build GitHub App installation URL
         const state = crypto.randomUUID();
-        const redirectUri = `${origin}/api/github/callback`;
-        const installUrl = `https://github.com/apps/${appSlug}/installations/new?state=${encodeURIComponent(state)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+        const installUrl = new URL(`${GITHUB_APP_BASE_URL}/${appSlug}/installations/new`);
+        installUrl.searchParams.set("state", state);
+        installUrl.searchParams.set("redirect_uri", `${origin}/api/github/callback`);
 
-        const response = NextResponse.redirect(installUrl);
-        response.cookies.set("gh_app_install_state", state, {
+        // Set state cookie using Next.js cookies API
+        const cookieStore = await cookies();
+        cookieStore.set(GITHUB_STATE_COOKIE_NAME, state, {
             httpOnly: true,
-            secure: origin.startsWith("https"),
+            secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             path: "/",
-            maxAge: 60 * 10,
+            maxAge: GITHUB_STATE_COOKIE_MAX_AGE,
         });
-        return response;
-    } catch {
-        const url = new URL(request.url);
-        return NextResponse.redirect(`${url.origin}/error?error=github_auth_failed`);
+
+        return NextResponse.redirect(installUrl.toString());
+    } catch (error) {
+        console.error("GitHub auth initialization failed:", error);
+        return NextResponse.redirect(`${origin}/error?error=github_auth_failed`);
     }
 }
 

@@ -1,7 +1,4 @@
-import { auth } from "@/lib/auth/server";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { SideMenu } from "@/components/side-menu";
+import { requireSession, ensureActiveOrganization } from "@/lib/auth/guards";
 import { Navbar } from "@/components/navbar";
 
 export default async function IntegrationsLayout({
@@ -9,13 +6,8 @@ export default async function IntegrationsLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    redirect("/login");
-  }
+  await requireSession();
+  await ensureActiveOrganization();
   return (
     <div className="min-h-dvh w-full">
       <Navbar />

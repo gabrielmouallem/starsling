@@ -1,15 +1,9 @@
-import { auth } from "@/lib/auth/server";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { requireSession, ensureActiveOrganization } from "@/lib/auth/guards";
 
 export default async function Home() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    redirect("/login");
-  }
+  await requireSession();
+  await ensureActiveOrganization();
 
   return redirect("/integrations");
 }
