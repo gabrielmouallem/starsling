@@ -10,14 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSocialLogin = async (e: React.FormEvent) => {

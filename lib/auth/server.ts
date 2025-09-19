@@ -48,32 +48,6 @@ export const auth = betterAuth({
     },
   },
   databaseHooks: {
-    session: {
-      create: {
-        async before(session, _context) {
-          const withEncryptedTokens = { ...session };
-          if (session.token) {
-            withEncryptedTokens.token = encrypt(session.token);
-          }
-          return {
-            data: withEncryptedTokens
-          };
-        },
-      },
-      update: {
-        async before(session, _context) {
-          if (session.token) {
-            return {
-              data: {
-                ...session,
-                token: encrypt(session.token)
-              } as any
-            };
-          }
-          return { data: session as any };
-        },
-      },
-    },
     account: {
       create: {
         async before(account, _context) {
