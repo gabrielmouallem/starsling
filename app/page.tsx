@@ -8,7 +8,7 @@ export default async function Home() {
   });
 
   if (!session) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   return redirect("/integrations");

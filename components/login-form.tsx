@@ -10,33 +10,30 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useState } from "react";
-import { authClient } from "@/lib/auth/client";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSocialLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
-
-    try {
-      const { data, error } = await authClient.signIn.social({
-        provider: "github",
-        errorCallbackURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/error`,
+    fetch("/api/github/auth")
+      .then((res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            router.push(data.url);
+            setIsLoading(false);
+          });
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-
-      console.debug({ data, error });
-
-      if (error) throw error;
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-      setIsLoading(false);
-    }
   };
 
   return (
@@ -49,7 +46,6 @@ export function LoginForm({
         <CardContent>
           <form onSubmit={handleSocialLogin}>
             <div className="flex flex-col gap-6">
-              {error && <p className="text-sm text-destructive-500">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Continue with GitHub"}
               </Button>
