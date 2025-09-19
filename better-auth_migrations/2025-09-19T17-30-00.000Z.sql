@@ -12,4 +12,4 @@ create table if not exists integration_installations (
 create index if not exists idx_integration_installations_user_provider
   on integration_installations (user_id, provider);
 
-
+alter table integration_installations enable row level security;
